@@ -1,0 +1,4 @@
+display_name = "Ogre Oustin Lua Patch"
+author_name = "969981"
+version = "0.1.0-experimental"
+description = "Experimental Smart Balloon, Auto Deposit and Instant Round Lua patch. Requires a compatible user-extracted Pokemon SV main Lua and path-preserving Trinity packaging."
