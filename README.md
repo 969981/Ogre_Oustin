@@ -39,7 +39,17 @@ This potentially avoids both collecting balloons and expanding the ordinary 30-f
 A separate **open-source Lua Hook proof of concept** is now available at [patches/lua/ogre_oustin_emptyhand.lua](patches/lua/ogre_oustin_emptyhand.lua), with [Lua mock tests](tests/test_emptyhand.lua), a [Python/liblua runner](tests/run_emptyhand_tests.py), and [implementation/packaging guide](docs/12-emptyhand-implementation-options-and-poc.md). It temporarily relaxes the same-color held > 0 check only during the original local station delivery call; it does **not** automatically collect fruit, fill Storage directly, or force CLEAR.
 
 **Status:** the local Lua simulation passes. Runtime deployment on Violet 4.0.0 is **not verified**, because the main .blua resource representation and correct compilation/repacking path still need validation. Do not copy the Lua source straight into the SD card or treat it as a working IPS/LayeredFS release. Default OFF/read-only; incompatible with the V1 Smart Balloon/Auto Deposit patch. Offline manual testing only.
+## Library main.blua real-file verification (2026-10-24)
+
+The user's Library `main.blua` was inspected directly: **12,912,264 bytes**, standard Lua 5.4 binary with **30,829 direct / 37,743 total** function prototypes. `liblua5.4` loads it successfully in binary mode without executing game code. All Ogre Oustin class/method hash anchors appear in parsed constants.
+
+**Important variant finding:** its SHA-256 exactly matches the separately documented **Scarlet 4.0.0** bytecode (`c1a4f4e2625912cf0b739a642a79ba3357df0557a544b92da22a6cb139de2815`); it is **not yet proven to be the Violet 4.0.0 resource**. The builder now fails closed for this known Scarlet sample unless `--allow-known-scarlet` is explicitly supplied. No actual 12.9 MB multi-chunk luac merge or Switch runtime validation has yet been completed.
+
+See [14 — real-file bytecode validation](docs/14-library-main-blua-validation-20261024.md) and [the build helper](tools/build_emptyhand_blua.py). The game bytecode itself is not distributed here.
+
 ## Documentation
+
+- [`docs/14-library-main-blua-validation-20261024.md`](docs/14-library-main-blua-validation-20261024.md) — actual Library file fingerprint, parsed prototypes/anchors, Scarlet-vs-Violet caveat and binary Lua load verification.
 
 - [`docs/13-v400-blua-bytecode-merge-trinity.md`](docs/13-v400-blua-bytecode-merge-trinity.md) — independently researched 4.0.0 Lua 5.4 bytecode format and no-decompile building with official luac; Trinity loose-file packaging.
 - [`tools/build_emptyhand_blua.py`](tools/build_emptyhand_blua.py) — verified-header Lua 5.4 compiler orchestration (requires user-extracted original).
