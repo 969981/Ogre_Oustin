@@ -28,6 +28,12 @@ A separate **Stage Start Full Carry** design has been documented; it is **not ye
 
 See [technical design](docs/09-stage-start-full-carry-research.md) and [implementation/test plan](docs/10-stage-start-full-carry-implementation-tests.md).
 
+## Recommended follow-up: Direct Empty-Hand Oblation (2026-10-24)
+
+The **more direct V3 research option** is to approach a normal berry table with zero carried fruit and perform the **original A-button delivery interaction**. The public 3.0.1-era script shows a field interaction (`C4D2B0FE0245F3E65`) reaching `Scene::F5F3E9041FE44C3C6` (`TryOblation`), where the `held > 0` predicate blocks empty-hand delivery. The low-level Carry decrement already does nothing at zero, whereas the standard delivery callback increments Storage and runs the normal clear check.
+
+This potentially avoids both collecting balloons and expanding the ordinary 30-fruit carry capacity. **4.0.0 runtime validation remains outstanding**, and the intended experiment is **offline-only, no write enabled by default**. See [11 — Direct Empty-Hand Oblation research](docs/11-direct-emptyhand-oblation-research.md). The prior [09 Full Carry design](docs/09-stage-start-full-carry-research.md) remains an alternative, not the preferred implementation.
+
 ## Documentation
 
 - [`docs/01-elf-4.0.0.md`](docs/01-elf-4.0.0.md) — 4.0.0 ELF layout and native Ojama findings.
@@ -40,6 +46,7 @@ See [technical design](docs/09-stage-start-full-carry-research.md) and [implemen
 - [`docs/08-trpfd-4.0.0-main-lua.md`](docs/08-trpfd-4.0.0-main-lua.md) — independently confirmed 4.0.0 TRPFD Lua pack names and remaining extraction requirement.
 - [`docs/09-stage-start-full-carry-research.md`](docs/09-stage-start-full-carry-research.md) — V2 new-Level auto-fill research, capacity >30 and exact candidate Lua hook.
 - [`docs/10-stage-start-full-carry-implementation-tests.md`](docs/10-stage-start-full-carry-implementation-tests.md) — step-by-step development, read-only logging, testing and acceptance.
+- [`docs/11-direct-emptyhand-oblation-research.md`](docs/11-direct-emptyhand-oblation-research.md) — preferred direct delivery with zero Carry and original basket interaction; upstream code proof and staged validation.
 
 ## Important status note
 
