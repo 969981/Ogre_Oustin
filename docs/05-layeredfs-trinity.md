@@ -1,5 +1,13 @@
 # Trinity / LayeredFS packaging workflow
 
+## 2026-10-24 主脚本专项更新（空手交付 V3）
+
+早期本页在仅掌握 TRPFD pack 名时，认为内层实际虚拟路径与脚本格式未确认。现有 [pokeldn 的 4.0.0 逆向文档](https://decryptu.github.io/pokeldn/sv_union_circle.html) 公开提供了 **script/lua/bin/release/main/main.blua**，格式为 **标准 Lua 5.4 bytecode**（Oodle 压缩存于 TRPFS）。该来源使用 Scarlet 4.0.0；Violet 4.0.0 仍须提取原始资源复核。
+
+对空手交付的新开发推荐 [docs/13](13-v400-blua-bytecode-merge-trinity.md) 的官方 luac5.4 混合合并方案：原始解压字节码 + 独立 Lua Hook → 新 main.blua。**不再推荐将 UTF-8 Lua 代码直接追加到 .blua 二进制后面**；本页下面提到的 patch_main_lua.py 仅适用于用户确实拥有 UTF-8 明文脚本时。
+
+Trinity Mod Loader 的 ApplyMod 已有明确源码依据，能通过 RemoveFile(路径哈希) 在自定义 TRPFD 中移除该 packed 文件，再将修改后的 **loose .blua** 放进 LayeredFS，因此未必需要重新压缩整个 trpak。依旧须做实机加载验证。
+
 ## What is verified
 
 Trinity Mod Loader is designed for Game Freak's TRPFS/TRPFD virtual filesystem. Its current public README describes the intended authoring workflow as:
