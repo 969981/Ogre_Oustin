@@ -16,6 +16,18 @@ The useful high-level call chain is now understood well enough to prototype the 
 
 The experimental patch is in [`patches/lua/ogre_oustin_patch.lua`](patches/lua/ogre_oustin_patch.lua). Use [`tools/patch_main_lua.py`](tools/patch_main_lua.py) to append it to a user-extracted base script. No Nintendo/Game Freak game script or asset is included in this repository.
 
+## V2 research — full Carry at the start of every Level (2026-10-24)
+
+A separate **Stage Start Full Carry** design has been documented; it is **not yet an implemented or runtime-validated mod**.
+
+- When each new Level enters Gameplay, automatically prepare the four colors in the player's **held/Carry** inventory up to that Level's actual requirement; **do not** fill Storage, automatically deliver, or force CLEAR.
+- Unlike the existing Smart Balloon / Instant Round modes, the player still manually delivers fruit to the original baskets. These modes should be mutually exclusive.
+- The screenshot example has requirements **14 + 4 + 12 + 11 = 41**, exceeding the game's ordinary 30-fruit Carry capacity, so capacity consistency is a mandatory part of the design.
+- The script-side preferred hook is `C6D182891100F211D::FCAFA8ED8BFD0E068`, **after** its original Gameplay/Reset sequence returns; hash-name semantics come from a 3.0.1-era public script and still require comparison with the extracted 4.0.0 main Lua.
+- Default scope is **offline-only, read-only instrumentation first**. No multiplayer/production support is claimed.
+
+See [technical design](docs/09-stage-start-full-carry-research.md) and [implementation/test plan](docs/10-stage-start-full-carry-implementation-tests.md).
+
 ## Documentation
 
 - [`docs/01-elf-4.0.0.md`](docs/01-elf-4.0.0.md) — 4.0.0 ELF layout and native Ojama findings.
@@ -25,6 +37,9 @@ The experimental patch is in [`patches/lua/ogre_oustin_patch.lua`](patches/lua/o
 - [`docs/05-layeredfs-trinity.md`](docs/05-layeredfs-trinity.md) — Trinity and Atmosphère/LayeredFS packaging workflow.
 - [`docs/06-runtime-validation.md`](docs/06-runtime-validation.md) — validation matrix for 4.0.0, especially multiplayer.
 - [`docs/07-sources.md`](docs/07-sources.md) — public source references used during analysis.
+- [`docs/08-trpfd-4.0.0-main-lua.md`](docs/08-trpfd-4.0.0-main-lua.md) — independently confirmed 4.0.0 TRPFD Lua pack names and remaining extraction requirement.
+- [`docs/09-stage-start-full-carry-research.md`](docs/09-stage-start-full-carry-research.md) — V2 new-Level auto-fill research, capacity >30 and exact candidate Lua hook.
+- [`docs/10-stage-start-full-carry-implementation-tests.md`](docs/10-stage-start-full-carry-implementation-tests.md) — step-by-step development, read-only logging, testing and acceptance.
 
 ## Important status note
 
