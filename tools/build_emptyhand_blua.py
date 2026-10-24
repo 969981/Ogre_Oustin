@@ -20,6 +20,8 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PATCH = ROOT / "patches/lua/ogre_oustin_emptyhand.lua"
+# Known, published Scarlet 4.0.0 bytecode; do not silently build as Violet.
+KNOWN_SCARLET_400_SHA256 = "c1a4f4e2625912cf0b739a642a79ba3357df0557a544b92da22a6cb139de2815"
 BYTECODE_MAGIC = b"\x1bLua\x54\x00\x19\x93\x0d\x0a\x1a\x0a"
 EXPECTED_SIZES = bytes((4, 8, 8))
 ANCHORS = (
@@ -68,6 +70,10 @@ def main() -> int:
     ap.add_argument("output", type=Path, help="new .blua (never overwrite input)")
     ap.add_argument("--patch", type=Path, default=DEFAULT_PATCH)
     ap.add_argument("--luac", help="path to luac5.4, e.g. /usr/bin/luac5.4")
+    ap.add_argument(
+        "--allow-known-scarlet", action="store_true",
+        help="explicitly allow the published Scarlet 4.0.0 main.blua as input; default target is Violet"
+    )
     ns = ap.parse_args()
 
     try:
@@ -78,6 +84,18 @@ def main() -> int:
             raise ValueError("refusing to overwrite source or patch")
         raw = source.read_bytes()
         validate_chunk("input", raw)
+        input_hash = hashlib.sha256(raw).hexdigest()
+        if input_hash == KNOWN_SCARLET_400_SHA256:
+            if not ns.allow_known_scarlet:
+                raise ValueError(
+                    "input SHA-256 matches the published Scarlet 4.0.0 main.blua, "
+                    "not a proven Violet 4.0.0 file. "
+                    "For deliberate Scarlet-only experiments, pass --allow-known-scarlet. "
+                    "For Violet, extract and verify that version's own script."
+                )
+            print("warning: building from published Scarlet 4.0.0 bytecode; use Scarlet title ID")
+        else:
+            print("warning: file's game version is unverified by SHA; compare to target RomFS")
         missing = [s.decode("ascii") for s in ANCHORS if s not in raw]
         if missing:
             raise ValueError(
