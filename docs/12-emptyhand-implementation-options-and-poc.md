@@ -2,6 +2,8 @@
 
 2026-10-24，目标 Pokémon Violet 4.0.0。本次交付的是**开源 Lua Hook + 本地模拟测试**，**尚未完成 4.0.0 主脚本封装、实机验证或可直接安装的 LayeredFS/IPS**。先阅读 [11 — 原版交付链逆向](11-direct-emptyhand-oblation-research.md)。
 
+**2026-10-24 更新：** 经 [pokeldn 的 4.0.0 逆向文档](https://decryptu.github.io/pokeldn/sv_union_circle.html) 与 Lua 官方 `luac` 源码核实，4.0.0 main.blua 是 **Lua 5.4 bytecode**，内层路径 `script/lua/bin/release/main/main.blua`。官方 luac5.4 支持**直接合并原始字节码 + 我们的独立 Hook Lua**，而 Trinity 可以把新 main.blua 作为 loose 资源叠加。此前“必须解编译整份脚本才能修改”的前提已取消。参见 [13 最新构建流程](13-v400-blua-bytecode-merge-trinity.md) 和 [build_emptyhand_blua.py](../tools/build_emptyhand_blua.py)。下文对二进制不可直接追加纯文本的提醒仍然成立。
+
 ## 1. 该选 Lua、sys-botbase 还是 IPS？
 
 | 方案 | 本功能能做什么 | 结论 |
