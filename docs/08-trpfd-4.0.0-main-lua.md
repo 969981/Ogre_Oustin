@@ -1,5 +1,9 @@
 # Violet 4.0.0 TRPFD: confirmed main Lua packs
 
+## 2026-10-24 外部资料更新：inner path + Lua 5.4 已有公开证据
+
+来自 [pokeldn 对 4.0.0 的逆向记录](https://decryptu.github.io/pokeldn/sv_union_circle.html)：主脚本内层路径为 `script/lua/bin/release/main/main.blua`，解压后是标准 **Lua 5.4 bytecode**，含 **30,829 顶层函数原型**，原 Pack 内容采用 Oodle 压缩。其样本是 **Scarlet 4.0.0**，不能直接视为已经验证过本项目用户持有的 **Violet 4.0.0** 文件。原文下面提到“路径尚不能确定”是当时仅依据 TRPFD 的研究状态，现已有外部证据。详见 [13 — 无需完整反编译的字节码合并路线](13-v400-blua-bytecode-merge-trinity.md)。
+
 ## Input
 
 This note is based on a user-supplied Pokémon Violet 4.0.0 `arc/data.trpfd`.
