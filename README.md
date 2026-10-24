@@ -41,6 +41,9 @@ A separate **open-source Lua Hook proof of concept** is now available at [patche
 **Status:** the local Lua simulation passes. Runtime deployment on Violet 4.0.0 is **not verified**, because the main .blua resource representation and correct compilation/repacking path still need validation. Do not copy the Lua source straight into the SD card or treat it as a working IPS/LayeredFS release. Default OFF/read-only; incompatible with the V1 Smart Balloon/Auto Deposit patch. Offline manual testing only.
 ## Documentation
 
+- [`docs/13-v400-blua-bytecode-merge-trinity.md`](docs/13-v400-blua-bytecode-merge-trinity.md) — independently researched 4.0.0 Lua 5.4 bytecode format and no-decompile building with official luac; Trinity loose-file packaging.
+- [`tools/build_emptyhand_blua.py`](tools/build_emptyhand_blua.py) — verified-header Lua 5.4 compiler orchestration (requires user-extracted original).
+
 - [`docs/01-elf-4.0.0.md`](docs/01-elf-4.0.0.md) — 4.0.0 ELF layout and native Ojama findings.
 - [`docs/02-lua-state-and-functions.md`](docs/02-lua-state-and-functions.md) — class map, 3×4 fruit state and important functions.
 - [`docs/03-network-protocol.md`](docs/03-network-protocol.md) — packet IDs 506/507/511/513 and authority flow.
@@ -58,7 +61,7 @@ A separate **open-source Lua Hook proof of concept** is now available at [patche
 
 The public `SV-Script-RE` material used to recover symbol semantics describes 3.0.1-era script data. The uploaded Violet 4.0.0 ELF has the same commonly used 16-hex Build ID prefix as 3.0.1 (`709BFD6611529864`), but this alone does **not** prove every Lua resource byte is identical. The patch therefore verifies hash-name anchors before modifying a user-extracted script.
 
-The exact 4.0.0 TRPFS virtual path of the main Lua resource must be confirmed from a real 4.0.0 RomFS / `data.trpfd` in Trinity File Explorer. Public Trinity documentation establishes the TRPFS workflow and `script` as a recognized RomFS root, but the repository intentionally does not pretend an unverified `script/main.lua` path is proven.
+**2026-10-24 update:** The 4.0.0 inner virtual path is now externally documented as `script/lua/bin/release/main/main.blua` (pokeldn Scarlet 4.0.0 analysis), and the extracted payload is Lua **5.4 bytecode**. The actual user-owned Violet 4.0.0 resource must still be checked locally. See [docs/13](docs/13-v400-blua-bytecode-merge-trinity.md). Do not confuse the flattened TRPFD pack name with this inner path.
 
 ## Safety / scope
 
