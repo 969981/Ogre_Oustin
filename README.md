@@ -34,6 +34,11 @@ The **more direct V3 research option** is to approach a normal berry table with 
 
 This potentially avoids both collecting balloons and expanding the ordinary 30-fruit carry capacity. **4.0.0 runtime validation remains outstanding**, and the intended experiment is **offline-only, no write enabled by default**. See [11 — Direct Empty-Hand Oblation research](docs/11-direct-emptyhand-oblation-research.md). The prior [09 Full Carry design](docs/09-stage-start-full-carry-research.md) remains an alternative, not the preferred implementation.
 
+## Empty-Hand Direct Oblation — experimental source PoC (2026-10-24)
+
+A separate **open-source Lua Hook proof of concept** is now available at [patches/lua/ogre_oustin_emptyhand.lua](patches/lua/ogre_oustin_emptyhand.lua), with [Lua mock tests](tests/test_emptyhand.lua), a [Python/liblua runner](tests/run_emptyhand_tests.py), and [implementation/packaging guide](docs/12-emptyhand-implementation-options-and-poc.md). It temporarily relaxes the same-color held > 0 check only during the original local station delivery call; it does **not** automatically collect fruit, fill Storage directly, or force CLEAR.
+
+**Status:** the local Lua simulation passes. Runtime deployment on Violet 4.0.0 is **not verified**, because the main .blua resource representation and correct compilation/repacking path still need validation. Do not copy the Lua source straight into the SD card or treat it as a working IPS/LayeredFS release. Default OFF/read-only; incompatible with the V1 Smart Balloon/Auto Deposit patch. Offline manual testing only.
 ## Documentation
 
 - [`docs/01-elf-4.0.0.md`](docs/01-elf-4.0.0.md) — 4.0.0 ELF layout and native Ojama findings.
@@ -47,6 +52,7 @@ This potentially avoids both collecting balloons and expanding the ordinary 30-f
 - [`docs/09-stage-start-full-carry-research.md`](docs/09-stage-start-full-carry-research.md) — V2 new-Level auto-fill research, capacity >30 and exact candidate Lua hook.
 - [`docs/10-stage-start-full-carry-implementation-tests.md`](docs/10-stage-start-full-carry-implementation-tests.md) — step-by-step development, read-only logging, testing and acceptance.
 - [`docs/11-direct-emptyhand-oblation-research.md`](docs/11-direct-emptyhand-oblation-research.md) — preferred direct delivery with zero Carry and original basket interaction; upstream code proof and staged validation.
+- [`docs/12-emptyhand-implementation-options-and-poc.md`](docs/12-emptyhand-implementation-options-and-poc.md) — Lua PoC, tests, sys-botbase vs IPS and remaining bytecode/LayeredFS deployment work.
 
 ## Important status note
 
