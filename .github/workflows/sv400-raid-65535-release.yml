@@ -6,6 +6,8 @@ on:
       - sv400-raid-damage-65535-ips
     paths:
       - 'tools/build_sv400_raid_damage_ips.py'
+      - 'tools/package_sv400_ryujinx.py'
+      - 'tests/test_sv400_ryujinx.py'
       - 'tests/test_sv400_raid_damage_ips.py'
       - 'docs/SV400_Always65535Damage_IPS.md'
       - '.github/workflows/sv400-raid-65535-release.yml'
@@ -23,13 +25,16 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test patch and generator
-        run: python -m unittest discover -s tests -p 'test_sv400_raid_damage_ips.py' -v
+        run: python -m unittest discover -s tests -p 'test_sv400_*.py' -v
       - name: Build IPS32 and installable ZIP
         run: python tools/build_sv400_raid_damage_ips.py --output-dir dist
+      - name: Build portable Ryujinx mod package
+        run: python tools/package_sv400_ryujinx.py --output-dir dist
       - name: Inspect generated release asset
         run: |
           sha256sum dist/atmosphere/exefs_patches/SV400_Always65535Damage/*.ips
           unzip -l dist/Pokemon_Violet_4.0.0_Always65535Damage_IPS.zip
+          unzip -l dist/Pokemon_Violet_4.0.0_Ryujinx_65535_IPS.zip
       - name: Publish branch-specific release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,6 +43,7 @@ jobs:
           TAG="sv400-raid-65535-v1.0.${GITHUB_RUN_NUMBER}"
           gh release create "$TAG" \
             dist/Pokemon_Violet_4.0.0_Always65535Damage_IPS.zip \
+            dist/Pokemon_Violet_4.0.0_Ryujinx_65535_IPS.zip \
             --target "$GITHUB_SHA" \
             --title "Violet 4.0.0 - always 65535 damage IPS (build ${GITHUB_RUN_NUMBER})" \
             --notes "Single-instruction IPS32 at main+0x1536214. Unconditional/global change, not raid-only; not validated in-game. Violet 4.0.0 Build ID 709bfd66115298640155fcc4979dba151c7cc79a. No Scarlet patch." \
