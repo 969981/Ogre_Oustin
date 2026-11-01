@@ -29,7 +29,7 @@ def inspect_patch(binary: bytes) -> dict:
     if proto["code_count"] != 547 or len(proto["consts"]) != 80:
         raise ValueError("unexpected modified CE6.Get layout")
     codes = proto["codes"]
-    wanted = {153: 100, 157: 0, 161: 0}
+    wanted = {153: 1, 157: 0, 161: 0}
     for index, (site, value) in enumerate(wanted.items()):
         stub = 538 + 3 * index
         if (codes[site] >> 7) - OFFSET_SJ + site + 1 != stub:
@@ -52,7 +52,7 @@ def package(original: Path, out: Path, game: str, violet_candidate: bool = False
     raw = original.read_bytes()
     if len(raw) != ORIGINAL_SIZE or hashlib.sha256(raw).hexdigest() != SOURCE_SHA:
         raise ValueError("original Scarlet 4.0.0 main.blua SHA/size guard failed")
-    patch, _ = compile_patch(raw, {"hp_coef": 100, "no_shield": True,
+    patch, _ = compile_patch(raw, {"hp_coef": 1, "no_shield": True,
                                    "shield_rates": [None, None, None]})
     audit = inspect_patch(patch)
     out.mkdir(parents=True, exist_ok=True)
