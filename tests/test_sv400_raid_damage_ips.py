@@ -15,6 +15,10 @@ class TestOneInstructionPatch(unittest.TestCase):
         self.assertEqual(mod.ORIGINAL_INSTRUCTION, struct.pack("<I", 0x79413BF9))
         self.assertEqual(mod.PATCH_INSTRUCTION, struct.pack("<I", 0x529FFFF9))
 
+    def test_ryujinx_buildid_filename_exact_uppercase(self):
+        self.assertEqual(mod.BUILD_ID, mod.BUILD_ID.upper())
+        self.assertTrue(mod.INSTALL_PATH.endswith(f'{mod.BUILD_ID}.ips'))
+
     def test_ips32_single_record(self):
         blob = mod.make_ips32()
         self.assertEqual(len(blob), 19)
