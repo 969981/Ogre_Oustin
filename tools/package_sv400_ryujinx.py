@@ -5,7 +5,7 @@ import hashlib
 import zipfile
 import argparse
 
-BUILD_ID = "709bfd66115298640155fcc4979dba151c7cc79a"
+BUILD_ID = "709BFD66115298640155FCC4979DBA151C7CC79A"
 TITLE_ID = "01008F6008C5E000"
 PATCH_NAME = "SV400_Always65535Damage"
 EXPECTED_IPS = bytes.fromhex("4950533332015363140004f9ff9f5245454f46")
@@ -16,7 +16,7 @@ README = """Ryujinx portable mode - Pokemon Violet 4.0.0
 1. Close the game and Ryujinx.
 2. Extract this ZIP into the emulator's publish/portable folder, merging mods/.
 3. Check that mods/contents/01008F6008C5E000/SV400_Always65535Damage/exefs/
-   contains the 709bfd66115298640155fcc4979dba151c7cc79a.ips file.
+   contains the 709BFD66115298640155FCC4979DBA151C7CC79A.ips file.
 4. Temporarily remove the old duplicate from sdcard/atmosphere/exefs_patches.
 5. In Ryujinx right-click Pokemon Violet -> Manage Mods -> enable the mod.
 6. Fully restart the game and inspect the latest portable/Logs log for
