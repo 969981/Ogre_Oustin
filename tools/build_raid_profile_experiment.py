@@ -70,7 +70,7 @@ class Audit(R):
         if p=='root/7833':self.matches.append(locals().copy())
 
 def compile_patch(source,parameters):
-    if len(source)!=ORIGINAL_SIZE or hashlib.sha256(source).hexdigest()!=SOURCE_SHA:raise ValueError('original Violet 4.0.0 main.blua SHA mismatch')
+    if len(source)!=ORIGINAL_SIZE or hashlib.sha256(source).hexdigest()!=SOURCE_SHA:raise ValueError('original 4.0.0 main.blua SHA mismatch')
     rd=Audit(source); rd.get(31);rd.u8();rd.node();assert rd.i==len(source)
     assert len(rd.matches)==1
     info=rd.matches[0];n=info['code_count'];codes=info['codes'][:];consts=info['consts']
@@ -121,7 +121,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--original',type=Path,required=True,help='user-extracted unmodified Violet 4.0.0 main.blua')
     p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--hp-coef',type=int,default=100)
+    p.add_argument('--hp-coef',type=int,default=1)
     p.add_argument('--no-shield',action='store_true')
     p.add_argument('--shield-rates',type=int,nargs=3,default=None)
     p.add_argument('--report',type=Path)
