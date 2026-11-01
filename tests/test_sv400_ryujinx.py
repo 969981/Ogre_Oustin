@@ -10,6 +10,10 @@ mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 
 class TestRyujinxPackage(unittest.TestCase):
+    def test_ryujinx_filename_exact_uppercase(self):
+        self.assertEqual(mod.BUILD_ID, mod.BUILD_ID.upper())
+        self.assertTrue(mod.RYUJINX_PATH.endswith(f'{mod.BUILD_ID}.ips'))
+
     def test_repackage_valid_patch(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
