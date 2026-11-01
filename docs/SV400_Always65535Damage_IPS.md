@@ -37,3 +37,7 @@ atmosphere/exefs_patches/SV400_Always65535Damage/709bfd66115298640155fcc4979dba1
 ```
 
 Remove `atmosphere/exefs_patches/SV400_Always65535Damage` to uninstall. Back up saves before testing. Test only in isolated/local offline games, not public multiplayer. This patch does **not** target Scarlet or other versions.
+
+## Ryujinx 1.3.3 build-id filename compatibility (2026-11-01)
+
+The 1.3.3 user log detected the mod and the correct Violet 4.0.0 Build ID, but not an IPS match. Earlier generator releases used a lowercase filename. Ryujinx code paths use uppercased NSO Build IDs and strict string equality for matching, so IPS filenames must be uppercase for compatibility with such builds. Release v1.0.3 and later use `709BFD66115298640155FCC4979DBA151C7CC79A.ips`. The IPS content is unchanged; matching and gameplay effects must be tested separately.
