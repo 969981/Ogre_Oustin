@@ -76,3 +76,9 @@ The public `SV-Script-RE` material used to recover symbol semantics describes 3.
 ## Safety / scope
 
 This repository is intended for reverse engineering, offline testing, local multiplayer research, and mod-development work. Multiplayer authority behavior is documented separately; do not assume a local memory mutation is network-safe.
+
+## Experimental Violet 4.0.0 Raid MaxHP IPS32 branch
+
+An **offline development preview** IPS32 is included at [`patches/ips32/SV400_MaxHP_Source1_DEV/`](patches/ips32/SV400_MaxHP_Source1_DEV/). It redirects the damage record write and substitutes target MaxHP when the observed attacker index is 1. The binary has been generated and statically checked against the exact Violet 4.0.0 ELF, **but not run-tested in Eden**.
+
+**Warning:** this is **not a verified raid-only patch**. Source index 1 may occur in ordinary battles, and zero-damage events may be affected. Do not enable in public multiplayer or normal gameplay. See [`docs/15-v400-raid-maxhp-ips32-dev.md`](docs/15-v400-raid-maxhp-ips32-dev.md) for exact limitations, install instructions and reproducible build steps. This experiment is separate from Ogre Oustin' Lua research.
