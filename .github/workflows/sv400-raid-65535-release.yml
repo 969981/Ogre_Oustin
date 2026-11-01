@@ -8,9 +8,12 @@ on:
       - 'tools/build_sv400_raid_damage_ips.py'
       - 'tools/package_sv400_ryujinx.py'
       - 'tools/package_sv400_four.py'
+      - 'tools/package_sv400_cheats.py'
       - 'tests/test_sv400_ryujinx.py'
       - 'tests/test_sv400_four.py'
+      - 'tests/test_sv400_cheat_packages.py'
       - 'docs/SV400_Release_Layout.md'
+      - 'docs/SV400_CHEAT_Install.md'
       - 'tests/test_sv400_raid_damage_ips.py'
       - 'docs/SV400_Always65535Damage_IPS.md'
       - '.github/workflows/sv400-raid-65535-release.yml'
@@ -35,12 +38,16 @@ jobs:
         run: python tools/package_sv400_ryujinx.py --output-dir dist
       - name: Build four separately installable packages
         run: python tools/package_sv400_four.py --output-dir dist
+      - name: Build four guarded Atmosphere and Ryujinx cheat packages
+        run: python tools/package_sv400_cheats.py --output-dir dist
       - name: Inspect generated release asset
         run: |
           sha256sum dist/atmosphere/exefs_patches/SV400_Always65535Damage/*.ips
           unzip -l dist/Pokemon_Violet_4.0.0_Always65535Damage_IPS.zip
           unzip -l dist/Pokemon_Violet_4.0.0_Ryujinx_65535_IPS.zip
           for f in dist/Pokemon_*_4.0.0_*_65535*.zip; do echo "Verify $f"; unzip -t "$f"; done
+          grep -q '14050000 01536214 79413BF9' dist/cheats/Violet/709BFD6611529864.txt
+          grep -q '14050000 01536214 79413BF9' dist/cheats/Scarlet/421C5411B487EB4D.txt
       - name: Publish branch-specific release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -52,7 +59,11 @@ jobs:
             dist/Pokemon_Scarlet_4.0.0_Ryujinx_65535_CANDIDATE.zip \
             dist/Pokemon_Violet_4.0.0_Atmosphere_65535.zip \
             dist/Pokemon_Violet_4.0.0_Ryujinx_65535.zip \
+            dist/Pokemon_Scarlet_4.0.0_Atmosphere_65535_CHEAT_CANDIDATE.zip \
+            dist/Pokemon_Scarlet_4.0.0_Ryujinx_65535_CHEAT_CANDIDATE.zip \
+            dist/Pokemon_Violet_4.0.0_Atmosphere_65535_CHEAT.zip \
+            dist/Pokemon_Violet_4.0.0_Ryujinx_65535_CHEAT.zip \
             --target "$GITHUB_SHA" \
-            --title "SV 4.0.0 - Scarlet/Violet Atmosphere + Ryujinx IPS32 (build ${GITHUB_RUN_NUMBER})" \
-            --notes "Four separate ZIPs for Scarlet/Violet 4.0.0 and Atmosphere/Ryujinx. Scarlet is an UNVERIFIED CANDIDATE with guessed same RVA as Violet; no Scarlet original NSO verification. Violet instruction is verified statically, but gameplay effects are not established for either game. Changes a single instruction globally and unconditionally, NOT raid-only and NOT guaranteed one-hit KO. Offline tests only, back up saves. See docs/SV400_Release_Layout.md." \
+            --title "SV 4.0.0 - Scarlet/Violet IPS32 + Cheat packages (Atmosphere/Ryujinx) (build ${GITHUB_RUN_NUMBER})" \
+            --notes "Eight separate ZIPs: four IPS32 and four Atmosphere cheat TXT packages for Scarlet/Violet 4.0.0 and Atmosphere/Ryujinx. Scarlet is an UNVERIFIED CANDIDATE with guessed same RVA as Violet; no Scarlet original NSO verification. Violet instruction is verified statically, but gameplay effects are not established for either game. Changes a single instruction globally and unconditionally, NOT raid-only and NOT guaranteed one-hit KO. Offline tests only, back up saves. See docs/SV400_Release_Layout.md and docs/SV400_CHEAT_Install.md. Cheat TXT and IPS at the same RVA MUST NOT be used together." \
             --latest
