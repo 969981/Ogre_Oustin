@@ -35,7 +35,7 @@ class RaidProfileTests(unittest.TestCase):
             report = package(src, Path(temp), "scarlet")
             with zipfile.ZipFile(Path(temp) / report["zip"]) as z:
                 self.assertEqual(set(z.namelist()), {"info.toml", MAIN_PATH})
-                self.assertEqual(inspect_patch(z.read(MAIN_PATH))["literals"]["hpCoef"], 100)
+                self.assertEqual(inspect_patch(z.read(MAIN_PATH))["literals"]["hpCoef"], 1)
 
 if __name__ == "__main__":
     unittest.main()
